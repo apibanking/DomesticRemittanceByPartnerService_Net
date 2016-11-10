@@ -36,6 +36,32 @@ namespace APIBanking
             return client;
         }
 
+        public static remitResponse remit(Environment env, remit request)
+        {
+            DomesticRemittanceByPartnerServiceClient client = createClient(env);
+
+            request.version = VERSION;
+
+            using (new System.ServiceModel.OperationContextScope((System.ServiceModel.IClientChannel)client.InnerChannel))
+            {
+                System.Net.ServicePointManager.SecurityProtocol = env.getSecurityProtocol();
+
+                System.ServiceModel.Web.WebOperationContext.Current.OutgoingRequest.UserAgent = "APIBanking.NET";
+
+
+                IDictionaryEnumerator headers = env.getHeaders().GetEnumerator();
+                while (headers.MoveNext())
+                {
+
+                    System.ServiceModel.Web.WebOperationContext.Current.OutgoingRequest.Headers.Add(headers.Key.ToString(), headers.Value.ToString());
+                }
+
+                remitResponse response = client.remit(request);
+
+                return response;
+            }
+        }
+
         public static getBalanceResponse getBalance(Environment env, getBalance request)
         {
             DomesticRemittanceByPartnerServiceClient client = createClient(env);
