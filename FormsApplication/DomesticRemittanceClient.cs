@@ -62,6 +62,12 @@ namespace APIBanking
             }
         }
 
+        public static String getURL(Environment env)
+        {
+            DomesticRemittanceByPartnerServiceClient client = createClient(env);
+            return client.Endpoint.ListenUri.AbsoluteUri;
+        }
+
         public static getBalanceResponse getBalance(Environment env, getBalance request)
         {
             DomesticRemittanceByPartnerServiceClient client = createClient(env);
@@ -76,7 +82,7 @@ namespace APIBanking
 
 
                     IDictionaryEnumerator headers = env.getHeaders().GetEnumerator();
-                    while (headers.MoveNext())
+                   while (headers.MoveNext())
                     {
 
                         System.ServiceModel.Web.WebOperationContext.Current.OutgoingRequest.Headers.Add(headers.Key.ToString(), headers.Value.ToString());
